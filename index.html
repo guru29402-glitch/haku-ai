@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#090f20">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <title>HAKU</title>
+  <style>
+    *{box-sizing:border-box} body{margin:0;background:#090f20;color:#edf4ff;font:16px system-ui,sans-serif}
+    main{max-width:720px;margin:auto;min-height:100vh;padding:24px 16px;display:flex;flex-direction:column}
+    header{display:flex;align-items:center;gap:12px;margin:12px 0 28px}
+    .orb{width:46px;height:46px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff,#76d8ff 22%,#315bff 55%,#111a45 75%);box-shadow:0 0 28px #367bff88}
+    h1{font-size:25px;margin:0;letter-spacing:3px} .sub{color:#9db2d6;font-size:13px}
+    #messages{flex:1;display:flex;flex-direction:column;gap:12px;padding-bottom:18px}
+    .bubble{padding:13px 15px;border-radius:17px;max-width:88%;line-height:1.45;white-space:pre-wrap}
+    .bot{background:#141f39;border:1px solid #26375e;align-self:flex-start}
+    .user{background:#244f9d;align-self:flex-end}
+    form{display:flex;gap:8px;position:sticky;bottom:0;background:#090f20;padding:12px 0}
+    input{min-width:0;flex:1;border:1px solid #31466e;background:#111b31;color:white;border-radius:14px;padding:14px;font:inherit}
+    button{border:0;border-radius:14px;background:#4b8dff;color:#071329;font-weight:700;padding:0 18px}
+    .note{font-size:12px;color:#93a6c8;text-align:center;margin-top:10px}
+  </style>
+</head>
+<body>
+<main>
+  <header><div class="orb" aria-hidden="true"></div><div><h1>HAKU</h1><div class="sub">Your personal assistant</div></div></header>
+  <section id="messages" aria-live="polite">
+    <div class="bubble bot">Hello! I'm HAKU. This is your app interface starter. To make me a real offline AI, we still need to connect an on-device model.</div>
+  </section>
+  <form id="chat"><input id="prompt" autocomplete="off" placeholder="Message HAKU…" aria-label="Message HAKU"><button>Send</button></form>
+  <div class="note">Starter interface • This version does not yet contain an AI model.</div>
+</main>
+<script>
+if ('serviceWorker' in navigator) window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
+const form=document.querySelector('#chat'), input=document.querySelector('#prompt'), messages=document.querySelector('#messages');
+form.addEventListener('submit',e=>{
+  e.preventDefault(); const value=input.value.trim(); if(!value)return;
+  const u=document.createElement('div');u.className='bubble user';u.textContent=value;messages.append(u);input.value='';
+  const b=document.createElement('div');b.className='bubble bot';
+  b.textContent='I received your message. HAKU’s AI engine has not been connected yet.';
+  messages.append(b);window.scrollTo(0,document.body.scrollHeight);
+});
+</script>
+</body>
+</html>
